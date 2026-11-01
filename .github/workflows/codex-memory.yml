@@ -1,0 +1,35 @@
+# Managed by the Codex GitHub Action installer.
+name: Codex memory
+
+on:
+  workflow_run:
+    workflows: [Codex]
+    types: [completed]
+  pull_request_target:
+    types: [closed]
+
+permissions: {}
+
+jobs:
+  memory:
+    if: >-
+      github.repository == 'coryparrry/codex-memory-qualification-20261101-d' && (
+      (github.event_name == 'workflow_run' &&
+        github.event.workflow_run.event == 'pull_request' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        contains(fromJSON('["coryparrry"]'), github.event.workflow_run.actor.login)) ||
+      (github.event_name == 'pull_request_target' &&
+        github.event.action == 'closed' &&
+        github.event.pull_request.head.repo.full_name == github.repository))
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: coryparrry/claude-code-action/review-memory@5cd122e5450e27ca368ffbf8dc87c83b39b7208f
+        with:
+          github_token: ${{ github.token }}
+          trusted_actors: "coryparrry"
