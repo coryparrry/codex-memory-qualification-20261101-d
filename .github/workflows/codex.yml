@@ -42,7 +42,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: agent
-        uses: coryparrry/claude-code-action@5cd122e5450e27ca368ffbf8dc87c83b39b7208f
+        uses: coryparrry/claude-code-action@c793c9318a6c3832de52c67cd9c8270b9c9a95b1
         with:
           trigger_phrase: "/codex"
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
@@ -91,7 +91,7 @@ jobs:
         run: >-
           git diff --no-ext-diff --no-textconv "$CODEX_PR_BASE_SHA...$CODEX_PR_HEAD_SHA" -- > .git/codex-review.diff
       - id: agent
-        uses: coryparrry/claude-code-action@5cd122e5450e27ca368ffbf8dc87c83b39b7208f
+        uses: coryparrry/claude-code-action@c793c9318a6c3832de52c67cd9c8270b9c9a95b1
         with:
           trigger_phrase: "/codex"
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
@@ -106,7 +106,7 @@ jobs:
             Use the repository and PR context. Return actionable findings and a concise summary together.
             Propose candidate findings using the native review schema. A separate verifier checks them before publication. Only new, high-confidence patch defects receive inline comments; remembered findings stay in their existing threads. Do not create severity-specific reviews or a combined findings comment.
             Do not edit files, commit changes or implement fixes during this review.
-            For this synthetic release qualification, inspect src/ledger.ts and propose its documented safe integer-cent invariant as repository_learning, scoped to src/ledger.ts. Do not invent a defect.
+            For this synthetic qualification, inspect the changed ledger file and propose its documented safe integer-cent invariant as repository_learning, scoped to that changed file. Do not invent a defect.
             The author can request an implementation in a comment with /codex.
       - name: Save execution report
         if: ${{ always() && steps.agent.outputs.execution_file != '' }}
